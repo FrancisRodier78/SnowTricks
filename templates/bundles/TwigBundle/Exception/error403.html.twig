@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Resource interdite.
+{% endblock %}
+
+{% block body %}
+    <div class="container bg-primary">
+        <h1>Oups ! La resource est interdite !</h1>
+        <a href="{{ path('homepage') }}" class="btn btn-secondary mb-3">Retour à l'accueil.</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des figures.{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Nos figures</h1>
+        <div class="row">
+            {% for i in 0..20 %}
+                <div class="col-md-2">
+                    <div class="card bg-light mb-3">
+                        <img src="http://placeholder.it/150x100" alt="Figure du style" style="height: 100px; width: 100%; display: block">
+                        <div class="card-header text-center">
+                            <h1>figureName</h1>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="{{ path('homepage') }}">SnowTricks</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('homepage') }}">Home</a>
+            </li>
+            <!-- li class="nav-item">
+                <a class="nav-link" href="#">Tricks</a>   
+            </li -->
+            {% if app.user %}
+                <li class="nav-item">
+                    <a href="{{ path('account_profile') }}" class="nav-link" href="#">Mon Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('account_password') }}" class="nav-link" href="#">Mon MDP</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('figure_create') }}" class="nav-link" href="#">Création</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('account_logout') }}" class="nav-link" href="#">Déconnexion</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{{ path('account_login') }}" class="nav-link" href="#">Connexion</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('account_register') }}" class="nav-link" href="#">Enregistrement</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+{% for label, messages in app.flashes %}
+    <div class="container">
+        <div class="alert alert-{{ label }}">
+            {% for message in messages %}
+                <p>{{ message | raw }}</p> 
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}

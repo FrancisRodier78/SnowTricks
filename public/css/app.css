@@ -1,0 +1,45 @@
+div.container {
+    margin-top: 20px;
+}
+
+div.ad-title h1 {
+    color: white;
+    text-shadow: 3px 3px 3px rgba(0,0,0,0.5);
+}
+
+div.ad-title {
+    padding: 2em;
+    background-size: cover;
+    background-position: center center;
+}
+
+.image-principale {
+    height: 100%; 
+    width: 1100px; 
+    display: block
+}
+
+.image-figure {
+    height: 100px; 
+    background-size: cover;
+    background-position: center;
+    display: block
+}
+
+.taille {
+    height: 230px;
+}
+
+.image-avatar {
+    height: 60px; 
+    width: 60px; 
+    display: block
+}
+
+.MDP-Oublie {
+    color: white;
+}
+
+.MDP-Oublie:hover {
+    color: white;
+}

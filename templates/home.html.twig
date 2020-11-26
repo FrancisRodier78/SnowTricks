@@ -1,0 +1,66 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Bienvenue sur SnowTricks.
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="jumbotron mt-3 bg-primary">
+            <h1 class="display-3">Bienvenue sur SnowTricks.</h1>
+            <p class="lead">Nous présentons les différentes figures du snowboard.</p>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center">
+        <img src="/images/Snowboarding-Tricks-00.jpg" alt="Photo de couverture" class="image-principale">
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% for figure in figures %}
+                {% set url = path('figure_show', {'slug': figure.slug}) %}
+                
+                {% if (loop.index - 1) is divisible by(5) or loop.first %}
+                    <div class="offset-md-1 col-md-2">
+                {% else %}
+                    <div class="col-md-2">
+                {% endif %}
+                
+                    <div class="card bg-light mb-3 taille">
+                        <a href="{{ url }}" class="d-flex justify-content-center">
+                            <img src="{{figure.imageDefaut}}" alt="Photo de figure" class="image-figure">
+                        </a>
+                        
+                        <div class="card-body">
+                            <h6 class="card-title">
+                                <div class="row mb-1">
+                                    <div class="col d-flex justify-content-center">
+                                        <a href="{{ url }}" class="btn btn-primary">{{ figure.figureName }}</a>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-1">
+                                    <div class="col-6 d-flex justify-content-center">
+                                        {% if app.user and ((app.user == figure.authorId) or (app.user.roles[0] == 'ROLE_ADMIN')) %}
+                                            <a href="{{ path('figure_modif', {'slug': figure.slug}) }}" class="btn btn-success">
+                                                <i class="fas fa-edit"></i> 
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-6 d-flex justify-content-center">
+                                        {% if app.user and ((app.user == figure.authorId) or (app.user.roles[0] == 'ROLE_ADMIN')) %}
+                                            <a href="{{ path('figure_supp', {'slug': figure.slug}) }}" class="btn btn-danger">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
