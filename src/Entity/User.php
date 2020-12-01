@@ -84,7 +84,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $Token;
+    private $token;
 
     public function __construct()
     {
@@ -284,12 +284,12 @@ class User implements UserInterface
 
     public function getToken(): ?string
     {
-        return $this->Token;
+        return $this->token;
     }
 
-    public function setToken(?string $Token): self
+    public function setToken(?string $token): self
     {
-        $this->Token = $Token;
+        $this->token = $token;
 
         return $this;
     }

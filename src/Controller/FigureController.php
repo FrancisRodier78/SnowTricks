@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Figure;
+use App\Entity\Document;
 use App\Form\FigureType;
 use App\Entity\Commentaire;
 use App\Form\CommentaireType;
@@ -78,9 +79,13 @@ class FigureController extends AbstractController
             $brochureFile = $form->get('imageDefaut')->getData();
 
             if ($brochureFile) {
-                $brochureFileName = $fileUploader->upload($brochureFile);
-                // il s'attend à ce que $brochureFileName soit de type Picture
-                //$figure->addPicture($brochureFileName);
+                $document = new Document();
+                $document->setUrl($brochureFile);
+                $document->setCaption('Nom a renseigner');
+                //$document->setFigurePicture($figure->getId());
+                $document->setBooleanImageVideo('1');
+
+                $figure->addPicture($document);
             }
 
             $manager->persist($figure);

@@ -166,12 +166,6 @@ class AccountController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-
-
-
-
-
-
     
     /**
      * Permet de saisir une adresse email pour un nouveau mot de passe
@@ -179,7 +173,7 @@ class AccountController extends AbstractController
      * @Route("/password-forget", name="password_forget")
      * 
      */
-    public function passwordForget(Request $request, UserRepository $repo) {
+    public function passwordForget(Request $request, UserRepository $repo, EntityManagerInterface $manager, MailerInterface $mailer) {
         $giveEmail = new GiveEmail;
 
         $form = $this->createForm(GiveEmailType::class, $giveEmail);
@@ -187,73 +181,55 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('email_search', [
-                'email' => $giveEmail->getEmail()
-            ]);            
+            $email = $giveEmail->getEmail();
+
+            $user = $repo->findOneBy(['email' => $email]);
+
+            if(!$user) {
+                $this->addFlash(
+                    'warning',
+                    "l'email est inconnu ! Veuillez le réentrer."
+                );
+
+                return $this->redirectToRoute('password_forget');            
+            } else {
+                // create token
+                $token = random_int(100000000000, 999999999999);
+                $user->setToken($token);
+
+                $manager->persist($user);
+                $manager->flush();
+
+                //************
+                // Send email
+                //************
+                $emailSend = (new Email())
+                ->from('francisrodier78@yahoo.fr')
+
+                //->to($email)
+                //   ou
+                ->to('francisrodier78@yahoo.fr')
+
+                ->subject('Réinitialiser le mot de passe.')
+                ->text('Cliquer sur l\'URL pour réinitialiser votre mot de pass.')
+
+                ->html('<p>http://localhost:8000/password-reset/' . $token . '</p>');
+                
+                // Marche pas
+                //$mailer->send($emailSend);
+
+                $this->addFlash(
+                    'success',
+                    "Un email vous a été envoyé !"
+                );
+
+                return $this->redirectToRoute('homepage');            
+            }
         }
 
         return $this->render('account/giveEmail.html.twig', [
             'form' => $form->createView()
         ]);
-    }
-
-    /**
-     * Permet d'envoyer un email
-     *
-     * @Route("/email-search/{email}", name="email_search")
-     * 
-     * @return void
-     */
-    public function emailSearch(User $user, UserRepository $repo, Request $request, EntityManagerInterface $manager) {
-    //public function emailSearch(User $user, UserRepository $repo, Request $request, EntityManagerInterface $manager, MailerInterface $mailer) {
-        // Il ne rentre pas ici avec un madeleine30@bruneau.com
-        // pourquoi ?
-        //dump($email);
-        //die;
-        
-        //$user = $repo->findOneBy(['email' => $email]);
-
-        if(!$user) {
-            $this->addFlash(
-                'warning',
-                "l'email est inconnu ! Veuillez le réentrer."
-            );
-
-            return $this->redirectToRoute('password_forget');            
-        } else {
-        dump($user);
-        die;
-            // create token
-            $token = random_int(100000000000, 999999999999);
-            $user->setToken($token);
-
-            $manager->persist($user);
-            $manager->flush();
-
-            // send email
-            //$emailSend = (new Email())
-            //->from('francisrodier78@yahoo.fr')
-
-            //->to($email)
-            //   ou
-            //->to('francisrodier78@yahoo.fr')
-
-            //->subject('Réinitialiser le mot de passe.')
-            //->text('Cliquer sur l\'URL pour réinitialiser votre mot de pass.')
-
-            //***
-            //->html('<p>http//password-reset/' . $token . '</p>');
-            //***
-
-            //$mailer->send($emailSend);
-
-            $this->addFlash(
-                'success',
-                "Un email vous a été envoyé !"
-            );
-
-            return $this->redirectToRoute('homepage');            
-        }
     }
 
     /**
@@ -263,8 +239,9 @@ class AccountController extends AbstractController
      *
      * @return Response
      */
-    public function passwordReset(User $user, UserRepository $repo, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
-        //$user = $repo->findOneBy(['token' => $token]);
+    public function passwordReset($token, UserRepository $repo, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
+        //  http://localhost:8000/password-reset/548139856837
+        $user = $repo->findOneBy(['token' => $token]);
 
         $passwordReset = new PasswordReset();
 
