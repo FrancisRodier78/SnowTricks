@@ -76,16 +76,11 @@ class FigureController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $brochureFile = $form->get('imageDefaut')->getData();
+            $imageDefaut = $form->get('imageDefaut')->getData();
 
-            if ($brochureFile) {
-                $document = new Document();
-                $document->setUrl($brochureFile);
-                $document->setCaption('Nom a renseigner');
-                //$document->setFigurePicture($figure->getId());
-                $document->setBooleanImageVideo('1');
-
-                $figure->addPicture($document);
+            if ($imageDefaut) {
+                $imageDefautName = $fileUploader->upload($imageDefaut);
+                $figure->setImageDefaut($imageDefautName);
             }
 
             $manager->persist($figure);

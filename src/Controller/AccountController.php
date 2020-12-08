@@ -216,7 +216,7 @@ class AccountController extends AbstractController
                 ->html('<p>http://localhost:8000/password-reset/' . $token . '</p>');
                 
                 // Marche pas
-                //$mailer->send($emailSend);
+                $mailer->send($emailSend);
 
                 $this->addFlash(
                     'success',

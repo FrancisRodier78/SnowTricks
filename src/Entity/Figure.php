@@ -152,6 +152,8 @@ class Figure
 
     public function setImageDefaut(string $imageDefaut): self
     {
+        //new File($this->getParameter('imageDefauts_directory').'/'.$product->getimageDefaut());
+
         $this->imageDefaut = $imageDefaut;
 
         return $this;

@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\DocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\DocumentRepository;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @ORM\Entity(repositoryClass=DocumentRepository::class)
@@ -78,6 +79,8 @@ class Document
 
     public function setFigurePicture(?Figure $figurePicture): self
     {
+        new File($this->getParameter('pictures_directory').'/'.$picture->getBrochureFilename());
+
         $this->figurePicture = $figurePicture;
 
         return $this;
