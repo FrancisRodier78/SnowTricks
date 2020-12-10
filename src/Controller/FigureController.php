@@ -8,6 +8,7 @@ use App\Entity\Document;
 use App\Form\FigureType;
 use App\Entity\Commentaire;
 use App\Form\CommentaireType;
+use App\Repository\CommentaireRepository;
 use App\Service\FileUploader;
 use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,11 +25,11 @@ class FigureController extends AbstractController
     /**
      * Permet de voir une figure de snowboard
      * 
-     * @Route("/show/{slug}", name="figure_show")
+     * @Route("/show/{slug}/{page}", name="figure_show", requirements={"page": "\d+"})
      *
      * @return Response
      */
-    public function show(Figure $figure, Request $request, EntityManagerInterface $manager) {
+    public function show(Figure $figure, CommentaireRepository $repo, Request $request, EntityManagerInterface $manager, $page = 1) {
         $commentaire = new Commentaire();
         $commentaire->setCreationDate(new \DateTime('now'));
         $commentaire->setAuthor($this->getUser());
@@ -48,9 +49,23 @@ class FigureController extends AbstractController
             );
         };
     
+        $limit = 3;
+        $start = $page * $limit - $limit;
+        $commentaires = $repo->findBy(['figure' => $figure->getId()], ['id' => 'desc'], $limit, $start);
+
+        $total = count($figure->getCommentaires());
+        if($total == 0) {
+            $pages = 0;
+        } else {
+            $pages = ceil($total/$limit);
+        }
+
         return $this->render('figure/show.html.twig', [
             'figure' => $figure,
-            'form' =>$form->createView()
+            'form' =>$form->createView(),
+            'pages' => $pages,
+            'page' => $page,
+            'commentaires' => $commentaires 
         ]);
     }
 
@@ -146,7 +161,7 @@ class FigureController extends AbstractController
      * Permet de supprimer un trick
      * 
      * @Route("/supp/{slug}", name="figure_supp")
-     * @Security("is_granted('ROLE_USER') and user === figure.getAuthorId()", message="Cette annonce ne vous appartient pas, vous ne pouvez pas la supprimer")
+     * @Security("is_granted('ROLE_USER') and user === figure.getAuthorId()", message="Cette figure ne vous appartient pas, vous ne pouvez pas la supprimer")
      *
      * @param Figure $figure
      * @param Request $request
@@ -164,4 +179,30 @@ class FigureController extends AbstractController
 
         return $this->redirectToRoute('homepage');
     }
+
+    /**
+     * Permet de supprimer un commentaire
+     * 
+     * @Route("/supp-commentaire/{id}/{slug}", name="commentaire_supp")
+     * @Security("is_granted('ROLE_USER')", message="Ce commentaire ne vous appartient pas, vous ne pouvez pas le supprimer")
+     *
+     * @param Commentaire $commentaire
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function supp_commentaire(Commentaire $commentaire, Request $request, EntityManagerInterface $manager, $slug) {
+        $manager->remove($commentaire);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "Le commentaire {$commentaire->getId()} a bien été supprimée !"
+        );
+
+        return $this->redirectToRoute('figure_show', [
+            'slug' => $slug,
+            'page' => 1
+        ]);
+}
 }

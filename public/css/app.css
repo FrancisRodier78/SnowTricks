@@ -43,3 +43,7 @@ div.ad-title {
 .MDP-Oublie:hover {
     color: white;
 }
+
+.page-item, .page-link {
+    background-color:#375a7f
+}

@@ -72,24 +72,50 @@
     </div>
 
     <div class="container">
-        {% for commentaire in figure.commentaires %}
+        {% for commentaire in commentaires %}
             <div class="row">
                 <div class="col-md-1 mb-3 bg-primary d-flex justify-content-center align-items-center">
                     <img src="{{ commentaire.author.avatar }}" alt="Video" class="image-avatar">
                 </div>
-
-                <div class="offset-md-1 col-md-1 mb-3 bg-primary d-flex justify-content-center align-items-center">
+                
+                <div class="{% if app.user and (app.user.roles[0] != 'ROLE_ADMIN') %}offset-md-1{% endif %} col-md-1 mb-3 bg-primary d-flex justify-content-center align-items-center">
                     {{ commentaire.author.nom }} {{ commentaire.author.prenom }}
                 </div>
 
-                <div class="offset-md-1 col-md-6 mb-3 bg-primary d-flex justify-content-center align-items-center">
+                <div class="{% if app.user and (app.user.roles[0] != 'ROLE_ADMIN') %}offset-md-1{% endif %} col-md-6 mb-3 bg-primary d-flex justify-content-center align-items-center">
                     {{ commentaire.content }}
                 </div>
 
-                <div class="offset-md-1 col-md-1 mb-3 bg-primary d-flex justify-content-center align-items-center">
+                <div class="{% if app.user and (app.user.roles[0] != 'ROLE_ADMIN') %}offset-md-1{% endif %} col-md-1 mb-3 bg-primary d-flex justify-content-center align-items-center">
                     {{ commentaire.creationDate|date("d/m/Y") }}
                 </div>
+
+                {% if app.user and (app.user.roles[0] == 'ROLE_ADMIN') %}
+                    <div class="offset-md-1 col-md-1 mb-3 bg-primary d-flex justify-content-center align-items-center">
+                        <a href="{{ path('commentaire_supp', {'id': commentaire.id, 'slug': figure.slug}) }}" class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
+
+        {% if pages != 0 %}
+            <div class="d-flex justify-content-center">
+                <ul class="pagination">
+                    <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                        <a class="page-link" href="{{path('figure_show', {'slug': figure.slug, 'page': page - 1})}}">&laquo;</a>
+                    </li>
+                    {% for i in 1..pages %}
+                        <li class="page-item {% if page == i %}active{% endif %} bg-primary">
+                            <a class="page-link" href="{{path('figure_show', {'slug': figure.slug, 'page': i})}}">{{i}}</a>
+                        </li>
+                    {% endfor %}
+                    <li class="page-item {% if page == pages %}disabled{% endif %}">
+                        <a class="page-link" href="{{path('figure_show', {'slug': figure.slug, 'page': page + 1})}}">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

@@ -19,7 +19,7 @@
     <div class="container">
         <div class="row">
             {% for figure in figures %}
-                {% set url = path('figure_show', {'slug': figure.slug}) %}
+                {% set url = path('figure_show', {'slug': figure.slug, 'page': 1}) %}
                 
                 {% if (loop.index - 1) is divisible by(5) or loop.first %}
                     <div class="offset-md-1 col-md-2">
