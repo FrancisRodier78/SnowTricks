@@ -79,8 +79,6 @@ class Document
 
     public function setFigurePicture(?Figure $figurePicture): self
     {
-        new File($this->getParameter('pictures_directory').'/'.$picture->getBrochureFilename());
-
         $this->figurePicture = $figurePicture;
 
         return $this;

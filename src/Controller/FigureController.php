@@ -49,7 +49,7 @@ class FigureController extends AbstractController
             );
         };
     
-        $limit = 3;
+        $limit = 10;
         $start = $page * $limit - $limit;
         $commentaires = $repo->findBy(['figure' => $figure->getId()], ['id' => 'desc'], $limit, $start);
 
@@ -122,21 +122,30 @@ class FigureController extends AbstractController
      * Permet de modifier un trick
      * 
      * @Route("/modif/{slug}", name="figure_modif")
-     * @Security("is_granted('ROLE_USER') and user === figure.getAuthorId()", message="Cette annonce ne vous appartient pas, vous ne pouvez pas la modifier")
+     * @Security("(is_granted('ROLE_USER') and user === figure.getAuthorId()) or (is_granted('ROLE_ADMIN'))", message="Cette annonce ne vous appartient pas, vous ne pouvez pas la modifier")
      *
      * @param Figure $figure
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    public function modif(Figure $figure, Request $request, EntityManagerInterface $manager) {
+    public function modif(Figure $figure, Request $request, EntityManagerInterface $manager, FileUploader $fileUploader) {
         $figure->setModifDate(new \DateTime('now'));
+        $figure->setImageDefaut('');
+
 
         $form = $this->createForm(FigureType::class, $figure);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            $imageDefaut = $form->get('imageDefaut')->getData();
+
+            if ($imageDefaut) {
+                $imageDefautName = $fileUploader->upload($imageDefaut);
+                $figure->setImageDefaut($imageDefautName);
+            }
+
             $manager->persist($figure);
             $manager->flush();
 
@@ -161,7 +170,7 @@ class FigureController extends AbstractController
      * Permet de supprimer un trick
      * 
      * @Route("/supp/{slug}", name="figure_supp")
-     * @Security("is_granted('ROLE_USER') and user === figure.getAuthorId()", message="Cette figure ne vous appartient pas, vous ne pouvez pas la supprimer")
+     * @Security("(is_granted('ROLE_USER') and user === figure.getAuthorId()) or (is_granted('ROLE_ADMIN'))", message="Cette figure ne vous appartient pas, vous ne pouvez pas la supprimer")
      *
      * @param Figure $figure
      * @param Request $request

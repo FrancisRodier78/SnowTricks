@@ -32,7 +32,8 @@ class FigureType extends AbstractType
                 ]
             ])
             ->add('imageDefaut', FileType::class, [
-                'label' => 'Image',
+//            ->add('imageDefaut', TextType::class, [
+                    'label' => 'Image',
                 'attr' => [
                     'placeholder' => "Tapez l'adresse de l'image de la figure."
                 ]

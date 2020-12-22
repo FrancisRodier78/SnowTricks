@@ -45,7 +45,498 @@ class AppFixtures extends Fixture
 
         $manager->persist($user);
 
-        for($i = 1; $i <= 11; $i++) {
+/*** Groupe 01 ***************************************************************************/
+        /////////////////////////
+        // Table User Figure
+        /////////////////////////
+            $user = new User();
+//
+            $introduction = 'Je suis un passioné de snowboard.';
+            $prenom = $faker->firstNameMale;
+            $nom = $faker->lastName;
+            $email = $faker->email;
+            $avatar = $faker->imageURL(60,40);
+            $hash = $this->encoder->encodePassword($user, 'password');
+
+            $user->setPrenom($prenom)
+                ->setNom($nom)
+                ->setEmail($email)
+                ->setIntroduction($introduction)
+                ->setHash($hash)
+                ->setAvatar($avatar);
+
+            $manager->persist($user);
+
+            /////////////////////////
+            // Groupe 01
+            /////////////////////////
+            $groupe = new Groupe();
+//
+            $groupeName = 'Contre rotation (anciennement école française)';
+
+            $groupe->setGroupeName($groupeName);
+
+            $manager->persist($groupe);
+
+            /////////////////////////
+            // Table Figure
+            /////////////////////////
+            $figure = new Figure();
+//
+            $figureName = 'Position frontside ou côté orteils';
+            $groupeName = $groupeName;
+//
+            $imageDefaut = "/images/Snowboarding-Tricks-01.jpg";
+//
+            $description = 'Le snowbordeur est en appui sur les orteils. À l\'origine, on signifiait qu\'il était face à la pente (de l\'anglais front (face) et side (côté)), mais dans de nombreux cas c\'est faux, à tel point que maintenant les anglophones utilisent parfois une autre terminologie. La position en appui sur les orteils peut s\'appeler toeside (de toe : orteil et side : côté).';
+            $creationDate = $faker->dateTime('-3 years', $timezone = null);
+            $modifDate = $faker->dateTime($creationDate, $timezone = null);
+
+            $figure->setFigureName($figureName)
+                ->setDescription($description)
+                ->setAuthorId($user)
+                ->setImageDefaut($imageDefaut)
+                ->setCreationDate($creationDate)
+                ->setModifDate($modifDate)
+                ->setgroupe($groupe);
+
+            $manager->persist($figure);
+
+                /////////////////////////
+                // Table Commentaire
+                /////////////////////////
+                $commentaire = new Commentaire();
+                $description = 'Pas mal comme figure.';
+                $date = $faker->dateTime($max = 'now', $timezone = null);
+
+                /////////////////////////
+                // Table User Commentaire
+                /////////////////////////
+                $genres = ['male', 'female'];
+                $genre = $faker->randomElement($genres);
+
+                $userCommentaire = new User();
+                $introduction = 'J\'aime faire des commentaires.';
+                $prenom = $faker->firstName($genre);
+                $nom = $faker->lastName;
+                $email = $faker->email;
+
+                $picture = 'https://randomuser.me/api/portraits/';
+                $pictureId = $faker->numberBetween(1, 99) . '.jpg';
+
+                $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
+
+                $hash = $this->encoder->encodePassword($user, 'password');
+
+                $userCommentaire->setPrenom($prenom)
+                    ->setNom($nom)
+                    ->setEmail($email)
+                    ->setIntroduction($introduction)
+                    ->setHash($hash)
+                    ->setAvatar($picture);
+
+                $manager->persist($userCommentaire);
+
+                $commentaire->setCreationDate($date)
+                    ->setContent($description)
+                    ->setAuthor($userCommentaire)
+                    ->setFigure($figure);
+
+                $manager->persist($commentaire);
+
+            /////////////////////////
+            // Table Document
+            /////////////////////////
+            $document = new Document();
+            $boolean = mt_rand(1,2);
+
+//
+            $URL = "/images/Snowboarding-Tricks-01.jpg";
+            
+            $description = 'Figure habituelle.';
+
+            $document->setUrl($URL)
+                ->setCaption($description)
+                ->setBooleanImageVideo($boolean);
+
+            if ($boolean == 1) {
+                $document->setFigureVideo($figure);
+            } else {
+                $document->setFigurePicture($figure);
+            }
+
+            $manager->persist($document);
+    
+/*** Groupe 02 ***************************************************************************/
+        /////////////////////////
+        // Table User Figure
+        /////////////////////////
+            $user = new User();
+//
+            $introduction = 'J\'ai fais de snowboard à Courchevel.';
+            $prenom = $faker->firstNameMale;
+            $nom = $faker->lastName;
+            $email = $faker->email;
+            $avatar = $faker->imageURL(60,40);
+            $hash = $this->encoder->encodePassword($user, 'password');
+
+            $user->setPrenom($prenom)
+                ->setNom($nom)
+                ->setEmail($email)
+                ->setIntroduction($introduction)
+                ->setHash($hash)
+                ->setAvatar($avatar);
+
+            $manager->persist($user);
+
+            /////////////////////////
+            // Groupe 02
+            /////////////////////////
+            $groupe = new Groupe();
+//
+            $groupeName = 'Pré-rotation (anciennement école suisse)';
+
+            $groupe->setGroupeName($groupeName);
+
+            $manager->persist($groupe);
+
+            /////////////////////////
+            // Table Figure
+            /////////////////////////
+            $figure = new Figure();
+//
+            $figureName = 'Position backside ou côté talons';
+            $groupeName = $groupeName;
+//
+            $imageDefaut = "/images/Snowboarding-Tricks-02.jpg";
+//
+            $description = 'Le snowbordeur est en appui sur les talons. À l\'origine, on signifiait qu\'il était dos à la pente (de l\'anglais back (dos) et side (côté)), mais dans de nombreux cas c\'est faux, à tel point que maintenant les anglophones utilisent parfois une autre terminologie.';
+            $creationDate = $faker->dateTime('-3 years', $timezone = null);
+            $modifDate = $faker->dateTime($creationDate, $timezone = null);
+
+            $figure->setFigureName($figureName)
+                ->setDescription($description)
+                ->setAuthorId($user)
+                ->setImageDefaut($imageDefaut)
+                ->setCreationDate($creationDate)
+                ->setModifDate($modifDate)
+                ->setgroupe($groupe);
+
+            $manager->persist($figure);
+
+                /////////////////////////
+                // Table Commentaire
+                /////////////////////////
+                $commentaire = new Commentaire();
+                $description = 'Pas mal comme figure.';
+                $date = $faker->dateTime($max = 'now', $timezone = null);
+
+                /////////////////////////
+                // Table User Commentaire
+                /////////////////////////
+                $genres = ['male', 'female'];
+                $genre = $faker->randomElement($genres);
+
+                $userCommentaire = new User();
+                $introduction = 'J\'aime faire des commentaires.';
+                $prenom = $faker->firstName($genre);
+                $nom = $faker->lastName;
+                $email = $faker->email;
+
+                $picture = 'https://randomuser.me/api/portraits/';
+                $pictureId = $faker->numberBetween(1, 99) . '.jpg';
+
+                $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
+
+                $hash = $this->encoder->encodePassword($user, 'password');
+
+                $userCommentaire->setPrenom($prenom)
+                    ->setNom($nom)
+                    ->setEmail($email)
+                    ->setIntroduction($introduction)
+                    ->setHash($hash)
+                    ->setAvatar($picture);
+
+                $manager->persist($userCommentaire);
+
+                $commentaire->setCreationDate($date)
+                    ->setContent($description)
+                    ->setAuthor($userCommentaire)
+                    ->setFigure($figure);
+
+                $manager->persist($commentaire);
+
+            /////////////////////////
+            // Table Document
+            /////////////////////////
+            $document = new Document();
+            $boolean = mt_rand(1,2);
+
+//
+            $URL = "/images/Snowboarding-Tricks-02.jpg";
+            
+            $description = 'Figure habituelle.';
+
+            $document->setUrl($URL)
+                ->setCaption($description)
+                ->setBooleanImageVideo($boolean);
+
+            if ($boolean == 1) {
+                $document->setFigureVideo($figure);
+            } else {
+                $document->setFigurePicture($figure);
+            }
+
+            $manager->persist($document);
+    
+
+/*** Groupe 03 ***************************************************************************/
+        /////////////////////////
+        // Table User Figure
+        /////////////////////////
+        $user = new User();
+//
+            $introduction = 'J\'adore le snowboard.';
+            $prenom = $faker->firstNameMale;
+            $nom = $faker->lastName;
+            $email = $faker->email;
+            $avatar = $faker->imageURL(60,40);
+            $hash = $this->encoder->encodePassword($user, 'password');
+
+            $user->setPrenom($prenom)
+                ->setNom($nom)
+                ->setEmail($email)
+                ->setIntroduction($introduction)
+                ->setHash($hash)
+                ->setAvatar($avatar);
+
+            $manager->persist($user);
+
+            /////////////////////////
+            // Groupe 01
+            /////////////////////////
+            $groupe = new Groupe();
+//
+            $groupeName = 'Co-rotation';
+
+            $groupe->setGroupeName($groupeName);
+
+            $manager->persist($groupe);
+
+            /////////////////////////
+            // Table Figure
+            /////////////////////////
+            $figure = new Figure();
+//
+            $figureName = 'Carre toe side ou carre pointe de pieds (anciennement frontside) ';
+            $groupeName = $groupeName;
+//
+            $imageDefaut = "/images/Snowboarding-Tricks-03.jpg";
+//
+            $description = 'c\'est la carre qui se trouve du côté des orteils.';
+            $creationDate = $faker->dateTime('-3 years', $timezone = null);
+            $modifDate = $faker->dateTime($creationDate, $timezone = null);
+
+            $figure->setFigureName($figureName)
+                ->setDescription($description)
+                ->setAuthorId($user)
+                ->setImageDefaut($imageDefaut)
+                ->setCreationDate($creationDate)
+                ->setModifDate($modifDate)
+                ->setgroupe($groupe);
+
+            $manager->persist($figure);
+
+                /////////////////////////
+                // Table Commentaire
+                /////////////////////////
+                $commentaire = new Commentaire();
+                $description = 'Pas mal comme figure.';
+                $date = $faker->dateTime($max = 'now', $timezone = null);
+
+                /////////////////////////
+                // Table User Commentaire
+                /////////////////////////
+                $genres = ['male', 'female'];
+                $genre = $faker->randomElement($genres);
+
+                $userCommentaire = new User();
+                $introduction = 'J\'aime faire des commentaires.';
+                $prenom = $faker->firstName($genre);
+                $nom = $faker->lastName;
+                $email = $faker->email;
+
+                $picture = 'https://randomuser.me/api/portraits/';
+                $pictureId = $faker->numberBetween(1, 99) . '.jpg';
+
+                $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
+
+                $hash = $this->encoder->encodePassword($user, 'password');
+
+                $userCommentaire->setPrenom($prenom)
+                    ->setNom($nom)
+                    ->setEmail($email)
+                    ->setIntroduction($introduction)
+                    ->setHash($hash)
+                    ->setAvatar($picture);
+
+                $manager->persist($userCommentaire);
+
+                $commentaire->setCreationDate($date)
+                    ->setContent($description)
+                    ->setAuthor($userCommentaire)
+                    ->setFigure($figure);
+
+                $manager->persist($commentaire);
+
+            /////////////////////////
+            // Table Document
+            /////////////////////////
+            $document = new Document();
+            $boolean = mt_rand(1,2);
+
+//
+            $URL = "/images/Snowboarding-Tricks-03.jpg";
+            
+            $description = 'Figure habituelle.';
+
+            $document->setUrl($URL)
+                ->setCaption($description)
+                ->setBooleanImageVideo($boolean);
+
+            if ($boolean == 1) {
+                $document->setFigureVideo($figure);
+            } else {
+                $document->setFigurePicture($figure);
+            }
+
+            $manager->persist($document);
+    
+/*** Groupe 04 ***************************************************************************/
+        /////////////////////////
+        // Table User Figure
+        /////////////////////////
+            $user = new User();
+//
+            $introduction = 'J\'ai fais de snowboard à Courchevel.';
+            $prenom = $faker->firstNameMale;
+            $nom = $faker->lastName;
+            $email = $faker->email;
+            $avatar = $faker->imageURL(60,40);
+            $hash = $this->encoder->encodePassword($user, 'password');
+
+            $user->setPrenom($prenom)
+                ->setNom($nom)
+                ->setEmail($email)
+                ->setIntroduction($introduction)
+                ->setHash($hash)
+                ->setAvatar($avatar);
+
+            $manager->persist($user);
+
+            /////////////////////////
+            // Groupe 04
+            /////////////////////////
+            $groupe = new Groupe();
+//
+            $groupeName = 'Synthèse';
+
+            $groupe->setGroupeName($groupeName);
+
+            $manager->persist($groupe);
+
+            /////////////////////////
+            // Table Figure
+            /////////////////////////
+            $figure = new Figure();
+//
+            $figureName = 'Carre heelside ou carre talon (anciennementbackside)';
+            $groupeName = $groupeName;
+//
+            $imageDefaut = "/images/Snowboarding-Tricks-04.jpeg";
+//
+            $description = 'c\'est la carre qui se trouve du côté des talons. Back et front sont utilisés pour les rotations.';
+            $creationDate = $faker->dateTime('-3 years', $timezone = null);
+            $modifDate = $faker->dateTime($creationDate, $timezone = null);
+
+            $figure->setFigureName($figureName)
+                ->setDescription($description)
+                ->setAuthorId($user)
+                ->setImageDefaut($imageDefaut)
+                ->setCreationDate($creationDate)
+                ->setModifDate($modifDate)
+                ->setgroupe($groupe);
+
+            $manager->persist($figure);
+
+                /////////////////////////
+                // Table Commentaire
+                /////////////////////////
+                $commentaire = new Commentaire();
+                $description = 'Pas mal comme figure.';
+                $date = $faker->dateTime($max = 'now', $timezone = null);
+
+                /////////////////////////
+                // Table User Commentaire
+                /////////////////////////
+                $genres = ['male', 'female'];
+                $genre = $faker->randomElement($genres);
+
+                $userCommentaire = new User();
+                $introduction = 'J\'aime faire des commentaires.';
+                $prenom = $faker->firstName($genre);
+                $nom = $faker->lastName;
+                $email = $faker->email;
+
+                $picture = 'https://randomuser.me/api/portraits/';
+                $pictureId = $faker->numberBetween(1, 99) . '.jpg';
+
+                $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
+
+                $hash = $this->encoder->encodePassword($user, 'password');
+
+                $userCommentaire->setPrenom($prenom)
+                    ->setNom($nom)
+                    ->setEmail($email)
+                    ->setIntroduction($introduction)
+                    ->setHash($hash)
+                    ->setAvatar($picture);
+
+                $manager->persist($userCommentaire);
+
+                $commentaire->setCreationDate($date)
+                    ->setContent($description)
+                    ->setAuthor($userCommentaire)
+                    ->setFigure($figure);
+
+                $manager->persist($commentaire);
+
+            /////////////////////////
+            // Table Document
+            /////////////////////////
+            $document = new Document();
+            $boolean = mt_rand(1,2);
+
+//
+            $URL = "/images/Snowboarding-Tricks-04.jpg";
+            
+            $description = 'Figure habituelle.';
+
+            $document->setUrl($URL)
+                ->setCaption($description)
+                ->setBooleanImageVideo($boolean);
+
+            if ($boolean == 1) {
+                $document->setFigureVideo($figure);
+            } else {
+                $document->setFigurePicture($figure);
+            }
+
+            $manager->persist($document);
+    
+        
+/******************************************************************************/
+        for($i = 1; $i <= 5; $i++) {
             /////////////////////////
             // Table User Figure
             /////////////////////////
@@ -67,17 +558,17 @@ class AppFixtures extends Fixture
             $manager->persist($user);
 
             for($m = 1; $m <= mt_rand(1,2); $m++) {
-                    /////////////////////////
-                    // Table Groupe
-                    /////////////////////////
-                    $groupe = new Groupe();
-                    $groupeName = $faker->sentence(2);
+                /////////////////////////
+                // Table Groupe
+                /////////////////////////
+                $groupe = new Groupe();
+                $groupeName = $faker->sentence(2);
 
-                    $groupe->setGroupeName($groupeName);
+                $groupe->setGroupeName($groupeName);
 
-                    $manager->persist($groupe);
+                $manager->persist($groupe);
 
-                    for($j = 1; $j <= mt_rand(2,3); $j++) {
+                for($j = 1; $j <= mt_rand(2,3); $j++) {
                     /////////////////////////
                     // Table Figure
                     /////////////////////////
@@ -108,7 +599,7 @@ class AppFixtures extends Fixture
 
                     $manager->persist($figure);
 
-                    for($k = 1; $k <= mt_rand(3,12); $k++) {
+                    for($k = 1; $k <= mt_rand(21,25); $k++) {
                         /////////////////////////
                         // Table Commentaire
                         /////////////////////////
@@ -184,6 +675,7 @@ class AppFixtures extends Fixture
                 }
             }
         }
+/******************************************************************************/
 
         $manager->flush();
     }

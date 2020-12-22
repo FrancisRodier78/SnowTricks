@@ -213,7 +213,9 @@ class AccountController extends AbstractController
                 ->subject('Réinitialiser le mot de passe.')
                 ->text('Cliquer sur l\'URL pour réinitialiser votre mot de pass.')
 
-                ->html('<p>http://localhost:8000/password-reset/' . $token . '</p>');
+                ->html('<p>Vous avez demandez de réinitialiser votre mot de passe.</p><br>
+                        <p>Veuillez copier l\'URL ci-dessous dans la barre d\'adresse.</p><br>
+                        <p>http://localhost:8000/password-reset/' . $token . '</p>');
                 
                 // Marche pas
                 $mailer->send($emailSend);
@@ -240,7 +242,6 @@ class AccountController extends AbstractController
      * @return Response
      */
     public function passwordReset($token, UserRepository $repo, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
-        //  http://localhost:8000/password-reset/548139856837
         $user = $repo->findOneBy(['token' => $token]);
 
         $passwordReset = new PasswordReset();
@@ -258,7 +259,7 @@ class AccountController extends AbstractController
             $form->handleRequest($request);
 
             if($form->isSubmitted() && $form->isValid()) {
-                $token = 'null';
+                $token = null;
                 $user->setToken($token);
 
                 $newPassword = $passwordReset->getNewPassword();
