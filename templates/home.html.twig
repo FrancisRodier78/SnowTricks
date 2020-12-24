@@ -8,7 +8,14 @@
     <div class="container">
         <div class="jumbotron mt-3 bg-primary">
             <h1 class="display-3">Bienvenue sur SnowTricks.</h1>
-            <p class="lead">Nous présentons les différentes figures du snowboard.</p>
+            <div class="row">
+                <div class="col"><p class="lead">Nous présentons les différentes figures du snowboard.</p></div>
+                <div class="col">
+                    <a href="#begin-figure">
+                        <i class="fas fa-arrow-down d-flex justify-content-end white"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -16,11 +23,28 @@
         <img src="/images/Snowboarding-Tricks-00.jpg" alt="Photo de couverture" class="image-principale">
     </div>
 
-    <div class="container">
+    <div class="container pt-3" id="begin-figure">
         <div class="row">
             {% for figure in figures %}
+                <div class="modal fade" id="deleteModal_{{ figure.slug }}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Fenêtre de suppression.</h3>
+                            </div>
+                            <div class="modal-body">
+                                <p>Confirmez-vous la suppression !</p>
+                            </div>
+                            <div class="modal-footer">
+                                <!-- button type="button" class="btn btn-danger" data-dimiss="modal">Valider</button -->
+                                <a href="{{ path('figure_supp', {'slug': figure.slug}) }}" class="btn btn-danger">Valider</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 {% set url = path('figure_show', {'slug': figure.slug, 'page': 1}) %}
-                
+
                 {% if (loop.index - 1) is divisible by(5) or loop.first %}
                     <div class="offset-md-1 col-md-2">
                 {% else %}
@@ -50,7 +74,7 @@
                                     </div>
                                     <div class="col-6 d-flex justify-content-center">
                                         {% if app.user and ((app.user == figure.authorId) or (app.user.roles[0] == 'ROLE_ADMIN')) %}
-                                            <a href="{{ path('figure_supp', {'slug': figure.slug}) }}" class="btn btn-danger">
+                                            <a data-toggle="modal" href="#deleteModal_{{ figure.slug }}" class="btn btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
                                             </a>
                                         {% endif %}
@@ -61,6 +85,14 @@
                     </div>
                 </div>
             {% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <a href="#begin-figure">
+                    <i class="fas fa-arrow-up d-flex justify-content-end white"></i>
+                </a>
+            </div>
         </div>
     </div>
 {% endblock %}

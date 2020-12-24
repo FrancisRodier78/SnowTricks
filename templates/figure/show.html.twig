@@ -78,15 +78,15 @@
                     <img src="{{ commentaire.author.avatar }}" alt="Video" class="image-avatar">
                 </div>
                 
-                <div class="{% if app.user and (app.user.roles[0] != 'ROLE_ADMIN') %}offset-md-1{% endif %} col-md-1 mb-3 bg-primary d-flex justify-content-center align-items-center">
+                <div class="{% if (app.user == NULL) or (app.user.roles[0] != 'ROLE_ADMIN') %}offset-md-1{% endif %} col-md-1 mb-3 bg-primary d-flex justify-content-center align-items-center">
                     {{ commentaire.author.nom }} {{ commentaire.author.prenom }}
                 </div>
 
-                <div class="{% if app.user and (app.user.roles[0] != 'ROLE_ADMIN') %}offset-md-1{% endif %} col-md-6 mb-3 bg-primary d-flex justify-content-center align-items-center">
+                <div class="{% if (app.user == NULL) or (app.user.roles[0] != 'ROLE_ADMIN') %}offset-md-1{% endif %} col-md-6 mb-3 bg-primary d-flex justify-content-center align-items-center">
                     {{ commentaire.content }}
                 </div>
 
-                <div class="{% if app.user and (app.user.roles[0] != 'ROLE_ADMIN') %}offset-md-1{% endif %} col-md-1 mb-3 bg-primary d-flex justify-content-center align-items-center">
+                <div class="{% if (app.user == NULL) or (app.user.roles[0] != 'ROLE_ADMIN') %}offset-md-1{% endif %} col-md-1 mb-3 bg-primary d-flex justify-content-center align-items-center">
                     {{ commentaire.creationDate|date("d/m/Y") }}
                 </div>
 
