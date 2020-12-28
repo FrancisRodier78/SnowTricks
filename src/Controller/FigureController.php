@@ -8,10 +8,11 @@ use App\Entity\Document;
 use App\Form\FigureType;
 use App\Entity\Commentaire;
 use App\Form\CommentaireType;
-use App\Repository\CommentaireRepository;
 use App\Service\FileUploader;
 use App\Repository\FigureRepository;
+use App\Repository\DocumentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CommentaireRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,7 +30,7 @@ class FigureController extends AbstractController
      *
      * @return Response
      */
-    public function show(Figure $figure, CommentaireRepository $repo, Request $request, EntityManagerInterface $manager, $page = 1) {
+    public function show(Figure $figure, CommentaireRepository $repo1, DocumentRepository $repo2, Request $request, EntityManagerInterface $manager, $page = 1) {
         $commentaire = new Commentaire();
         $commentaire->setCreationDate(new \DateTime('now'));
         $commentaire->setAuthor($this->getUser());
@@ -51,7 +52,7 @@ class FigureController extends AbstractController
     
         $limit = 10;
         $start = $page * $limit - $limit;
-        $commentaires = $repo->findBy(['figure' => $figure->getId()], ['id' => 'desc'], $limit, $start);
+        $commentaires = $repo1->findBy(['figure' => $figure->getId()], ['id' => 'desc'], $limit, $start);
 
         $total = count($figure->getCommentaires());
         if($total == 0) {
@@ -60,8 +61,17 @@ class FigureController extends AbstractController
             $pages = ceil($total/$limit);
         }
 
+        $document = $repo2->findOneBy(['figurePicture' => $figure->getId()]);
+
+        // Si le figurePicture n'existe pas alors le document est null
+        if($document == NULL) {
+            // Si le figureVideo n'existe pas alors le document est null
+            $document = $repo2->findOneBy(['figureVideo' => $figure->getId()]);
+        };
+
         return $this->render('figure/show.html.twig', [
             'figure' => $figure,
+            'document' => $document,
             'form' =>$form->createView(),
             'pages' => $pages,
             'page' => $page,
@@ -213,5 +223,75 @@ class FigureController extends AbstractController
             'slug' => $slug,
             'page' => 1
         ]);
-}
+    }
+
+    /**
+     * Permet de modifier une imageDefaut
+     * 
+     * @Route("/modif-imageDefaut/{slug}", name="imageDefaut_modif")
+     * @Security("(is_granted('ROLE_USER') and user === figure.getAuthorId()) or (is_granted('ROLE_ADMIN'))", message="Cette annonce ne vous appartient pas, vous ne pouvez pas la modifier")
+     *
+     * @param Figure $figure
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function modif_imageDefaut(Figure $figure, Request $request, EntityManagerInterface $manager, FileUploader $fileUploader) {
+        $figure->setModifDate(new \DateTime('now'));
+        $figure->setImageDefaut('');
+
+        $form = $this->createForm(FigureType::class, $figure);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $imageDefaut = $form->get('imageDefaut')->getData();
+
+            if ($imageDefaut) {
+                $imageDefautName = $fileUploader->upload($imageDefaut);
+                $figure->setImageDefaut($imageDefautName);
+            }
+
+            $manager->persist($figure);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "La figure a bien été enregistrée !"
+            );
+
+            return $this->redirectToRoute('figure_show', [
+                'slug' => $figure->getSlug()
+            ]);
+        };
+    
+        return $this->render('figure/create_modif.html.twig', [
+            'figure' => $figure,
+            'form' =>$form->createView()
+        ]);
+    }
+
+    /**
+     * Permet de supprimer une imageDefaut
+     * 
+     * @Route("/supp-imageDefaut/{slug}", name="imageDefaut_supp")
+     * @Security("(is_granted('ROLE_USER') and user === figure.getAuthorId()) or (is_granted('ROLE_ADMIN'))", message="Cette image ne vous appartient pas, vous ne pouvez pas la supprimer")
+     *
+     * @param Figure $figure
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    public function supp_imageDefaut(Figure $figure, Request $request, EntityManagerInterface $manager) {
+        $figure->setImageDefaut('');
+        $manager->persist($figure);
+        $manager->flush();
+
+        $this->addFlash(
+            'success',
+            "L'image par defaut {$figure->getFigureName()} a bien été supprimée !"
+        );
+
+        return $this->redirectToRoute('homepage');
+    }
 }
