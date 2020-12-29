@@ -51,3 +51,25 @@ div.ad-title {
 .white {
     color: white;
 }
+
+#trickMedia {
+    display: contents;
+}
+
+#seeMedia {
+    display: none;
+}
+
+#hideMedia {
+    display: none;
+}
+
+@media(max-width: 767px) { 
+    #trickMedia {
+            display: none;
+    }
+
+    #seeMedia {
+        display: contents;
+    }
+}
