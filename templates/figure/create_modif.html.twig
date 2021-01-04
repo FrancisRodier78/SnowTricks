@@ -2,6 +2,8 @@
 
 {% block title %}{{ figure.figureName }}{% endblock %}
 
+{% form_theme form _self %}
+
 {% block body %}
     <div class="figure-name">
         <div class="container ad-title mb-3 bg-primary">
@@ -37,4 +39,78 @@
             {{ form_end(form) }}
         </div>
     </div>
+{% endblock %}
+
+
+
+{% block _figure_picture_widget %}
+    {{ form_widget(form) }}
+
+    <div class="form-group">
+        <button type="button" id="add-picture" class="btn btn-secondary">Ajouter une picture</button>
+    </div>
+{% endblock %}
+
+{% block _figure_picture_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _figure_picture_entry_widget %}
+    <div class="form-group">
+        <div class="row">
+            <div class="col">
+                {{ form_widget(form.url) }}
+            </div>
+            <div class="col">
+                {{ form_widget(form.caption) }}
+            </div>
+            <div class="col">
+                {#{ form_widget(form.figurePicture) }#}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block _figure_video_widget %}
+    {{ form_widget(form) }}
+
+    <div class="form-group">
+        <button type="button" id="add-video" class="btn btn-secondary">Ajouter une video</button>
+    </div>
+{% endblock %}
+
+{% block _figure_video_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _figure_video_entry_widget %}
+    <div class="form-group">
+        <div class="row">
+            <div class="col">
+                {{ form_widget(form.url) }}
+            </div>
+            <div class="col">
+                {{ form_widget(form.caption) }}
+            </div>
+            <div class="col">
+                {#{ form_widget(form.figureVideo) }#}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $('#add-picture').click(function(){
+            const index = $('figure_picture div.form-group').length;
+            const tmpl = $('figure_picture').data('prototype').replace(/__name__/g, index);
+            $('figure_picture').append(tmpl);
+        })
+
+        $('#add-video').click(function(){
+            const index = $('figure_video div.form-group').length;
+            const tmpl = $('figure_video').data('prototype').replace(/__name__/g, index);
+            $('figure_video').append(tmpl);
+        })
+    </script>
 {% endblock %}

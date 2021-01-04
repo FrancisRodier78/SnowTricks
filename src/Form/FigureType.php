@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Figure;
 use App\Entity\Groupe;
+use App\Form\DocumentType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class FigureType extends AbstractType
 {
@@ -44,6 +46,14 @@ class FigureType extends AbstractType
             ->add('groupe', EntityType::class, [
                 'class' => Groupe::class,
                 'choice_label' => 'groupeName' 
+            ])
+            ->add('picture', CollectionType::class, [
+                'entry_type' => DocumentType::class,
+                'allow_add' => true
+            ])
+            ->add('video', CollectionType::class, [
+                'entry_type' => DocumentType::class,
+                'allow_add' => true
             ])
         ;
     }

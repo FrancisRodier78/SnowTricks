@@ -16,7 +16,24 @@ div.ad-title {
 .image-principale {
     height: 100%; 
     width: 1100px; 
-    display: block
+    display: block;
+    position: relative
+}
+
+.bouton-success {
+    position: absolute; 
+    top: 250px; 
+    right: 360px; 
+    width: 40px; 
+    height: 40px;
+}
+
+.bouton-danger {
+    position: absolute; 
+    top: 250px; 
+    right: 310px; 
+    width: 40px; 
+    height: 40px;
 }
 
 .image-figure {
@@ -52,6 +69,13 @@ div.ad-title {
     color: white;
 }
 
+.image-home {
+    height: 100px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
 #trickMedia {
     display: contents;
 }
@@ -71,5 +95,9 @@ div.ad-title {
 
     #seeMedia {
         display: contents;
+    }
+
+    #hideMedia {
+        display: none;
     }
 }
