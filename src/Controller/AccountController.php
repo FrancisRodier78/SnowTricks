@@ -62,7 +62,7 @@ class AccountController extends AbstractController
      *
      * @return Response
      */
-    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
+    public function register(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, MailerInterface $mailer) {
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
@@ -73,12 +73,35 @@ class AccountController extends AbstractController
             $hash = $encoder->encodePassword($user, $user->getHash());
             $user->setHash($hash);
 
+            // create token
+            $token = random_int(100000000000, 999999999999);
+            $user->setToken($token);
+
             $manager->persist($user);
             $manager->flush();
 
+            //************
+            // Send email
+            //************
+            $emailSend = (new Email())
+            ->from('francisrodier78@yahoo.fr')
+
+            //->to($user->getEmail())
+            //   ou
+            ->to('francisrodier78@yahoo.fr')
+
+            ->subject('Confirmation du compte.')
+            ->text('Cliquer sur l\'URL pour confirmer votre compte.')
+
+            ->html('<p>Vous avez demandé la création d\'un compte sur Snowtricks.</p><br>
+                    <p>Veuillez copier l\'URL ci-dessous dans la barre d\'adresse.</p><br>
+                    <p>http://localhost:8000/account-confirmation/' . $token . '</p>');
+            
+            $mailer->send($emailSend);
+
             $this->addFlash(
                 'success',
-                "Votre profil a bien été créé ! Vous pouvez maintenant vous connecter !"
+                "Votre profil a bien été créé ! Veuillez le confirmez par l'email envoyé."
             );
 
             return $this->redirectToRoute('account_login');
@@ -87,6 +110,43 @@ class AccountController extends AbstractController
         return $this->render('account/registration.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @Route("/account-confirmation/{token}", name="account_confirmation")
+     * 
+     * @param [type] $token
+     * @param UserRepository $repo
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return void
+     */
+    public function confirmation($token, UserRepository $repo, Request $request, EntityManagerInterface $manager) {
+        $user = $repo->findOneBy(['token' => $token]);
+
+        if(!$user) {
+            $this->addFlash(
+                'warning',
+                "le token est inconnu !"
+            );
+
+            return $this->redirectToRoute('account_register');            
+        } else {
+            $token = null;
+            $user->setToken($token);
+
+            $manager->persist($user);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Votre compte est confirmé, veuillez-vous connecter."
+            );
+
+            return $this->redirectToRoute('account_login');
+        }
     }
 
     /**
@@ -211,13 +271,12 @@ class AccountController extends AbstractController
                 ->to('francisrodier78@yahoo.fr')
 
                 ->subject('Réinitialiser le mot de passe.')
-                ->text('Cliquer sur l\'URL pour réinitialiser votre mot de pass.')
+                ->text('Cliquer sur l\'URL pour réinitialiser votre mot de passe.')
 
-                ->html('<p>Vous avez demandez de réinitialiser votre mot de passe.</p><br>
+                ->html('<p>Vous avez demandé de réinitialiser votre mot de passe.</p><br>
                         <p>Veuillez copier l\'URL ci-dessous dans la barre d\'adresse.</p><br>
                         <p>http://localhost:8000/password-reset/' . $token . '</p>');
                 
-                // Marche pas
                 $mailer->send($emailSend);
 
                 $this->addFlash(
