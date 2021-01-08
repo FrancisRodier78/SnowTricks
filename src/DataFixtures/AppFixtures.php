@@ -152,14 +152,16 @@ class AppFixtures extends Fixture
 
 //
             $URL = "/images/Snowboarding-Tricks-01.jpg";
-            
+            $docuImage = 'aaa';
+                            
             $description = 'Figure habituelle.';
 
             $document->setUrl($URL)
-                ->setCaption($description)
-                ->setBooleanImageVideo($boolean);
+                     ->setDocuImage($docuImage)
+                     ->setCaption($description)
+                     ->setBooleanImageVideo($boolean);
 
-            if ($boolean == 1) {
+            if ($boolean == 2) {
                 $document->setFigureVideo($figure);
             } else {
                 $document->setFigurePicture($figure);
@@ -274,14 +276,16 @@ class AppFixtures extends Fixture
 
 //
             $URL = "/images/Snowboarding-Tricks-02.jpg";
-            
+            $docuImage = 'aaa';
+
             $description = 'Figure habituelle.';
 
             $document->setUrl($URL)
-                ->setCaption($description)
-                ->setBooleanImageVideo($boolean);
+                     ->setDocuImage($docuImage)
+                     ->setCaption($description)
+                     ->setBooleanImageVideo($boolean);
 
-            if ($boolean == 1) {
+            if ($boolean == 2) {
                 $document->setFigureVideo($figure);
             } else {
                 $document->setFigurePicture($figure);
@@ -397,14 +401,16 @@ class AppFixtures extends Fixture
 
 //
             $URL = "/images/Snowboarding-Tricks-03.jpg";
-            
+            $docuImage = 'aaa';
+
             $description = 'Figure habituelle.';
 
             $document->setUrl($URL)
-                ->setCaption($description)
-                ->setBooleanImageVideo($boolean);
+                     ->setDocuImage($docuImage)
+                     ->setCaption($description)
+                     ->setBooleanImageVideo($boolean);
 
-            if ($boolean == 1) {
+            if ($boolean == 2) {
                 $document->setFigureVideo($figure);
             } else {
                 $document->setFigurePicture($figure);
@@ -519,14 +525,16 @@ class AppFixtures extends Fixture
 
 //
             $URL = "/images/Snowboarding-Tricks-04.jpg";
-            
+            $docuImage = 'aaa';
+
             $description = 'Figure habituelle.';
 
             $document->setUrl($URL)
-                ->setCaption($description)
-                ->setBooleanImageVideo($boolean);
+                     ->setDocuImage($docuImage)
+                     ->setCaption($description)
+                     ->setBooleanImageVideo($boolean);
 
-            if ($boolean == 1) {
+            if ($boolean == 2) {
                 $document->setFigureVideo($figure);
             } else {
                 $document->setFigurePicture($figure);
@@ -650,24 +658,43 @@ class AppFixtures extends Fixture
                         $document = new Document();
                         $boolean = mt_rand(1,2);
 
-                        $num = mt_rand(1, 6);
-                        if ($num == 1) {$URL = "/images/Snowboarding-Tricks-01.jpg";}
-                        if ($num == 2) {$URL = "/images/Snowboarding-Tricks-02.jpg";}
-                        if ($num == 3) {$URL = "/images/Snowboarding-Tricks-03.jpg";}
-                        if ($num == 4) {$URL = "/images/Snowboarding-Tricks-04.jpeg";}
-                        if ($num == 5) {$URL = "/images/Snowboarding-Tricks-05.jpg";}
-                        if ($num == 6) {$URL = "/images/Snowboarding-Tricks-06.jpg";}
-                        
                         $description = $faker->sentence(2);
 
                         $document->setUrl($URL)
-                            ->setCaption($description)
-                            ->setBooleanImageVideo($boolean);
+                                 ->setCaption($description)
+                                 ->setBooleanImageVideo($boolean);
 
                         if ($boolean == 1) {
-                            $document->setFigureVideo($figure);
+                            $num = mt_rand(1, 6);
+                            if ($num == 1) {$URL = "/images/Snowboarding-Tricks-01.jpg";}
+                            if ($num == 2) {$URL = "/images/Snowboarding-Tricks-02.jpg";}
+                            if ($num == 3) {$URL = "/images/Snowboarding-Tricks-03.jpg";}
+                            if ($num == 4) {$URL = "/images/Snowboarding-Tricks-04.jpeg";}
+                            if ($num == 5) {$URL = "/images/Snowboarding-Tricks-05.jpg";}
+                            if ($num == 6) {$URL = "/images/Snowboarding-Tricks-06.jpg";}
+
+                            $docuImage = 'aaa';
+                            
+                            $document->setFigurePicture($figure)
+                                     ->setDocuImage($docuImage);
                         } else {
-                            $document->setFigurePicture($figure);
+                            $num = mt_rand(1, 6);
+                            if ($num == 1) {$URL = "https://www.youtube.com/embed/SQyTWk7OxSI";}
+                            if ($num == 2) {$URL = "https://www.youtube.com/embed/8AWdZKMTG3U";}
+                            if ($num == 3) {$URL = "https://www.youtube.com/embed/G9qlTInKbNE";}
+                            if ($num == 4) {$URL = "https://www.youtube.com/embed/Ey5elKTrUCk";}
+                            if ($num == 5) {$URL = "https://www.youtube.com/embed/qsd8uaex-Is";}
+                            if ($num == 6) {$URL = "https://www.youtube.com/embed/V9xuy-rVj9w";}
+
+                            if ($num == 1) {$docuImage = "https://i.ytimg.com/vi/SQyTWk7OxSI/hq720.jpg";}
+                            if ($num == 2) {$docuImage = "https://i.ytimg.com/vi/8AWdZKMTG3U/hq720.jpg";}
+                            if ($num == 3) {$docuImage = "https://i.ytimg.com/vi/G9qlTInKbNE/hq720.jpg";}
+                            if ($num == 4) {$docuImage = "https://i.ytimg.com/vi/Ey5elKTrUCk/hq720.jpg";}
+                            if ($num == 5) {$docuImage = "https://i.ytimg.com/vi/qsd8uaex-Is/hq720.jpg";}
+                            if ($num == 6) {$docuImage = "https://i.ytimg.com/vi/V9xuy-rVj9w/hq720.jpg";}
+
+                            $document->setFigureVideo($figure)
+                                     ->setDocuImage($docuImage);
                         }
 
                         $manager->persist($document);

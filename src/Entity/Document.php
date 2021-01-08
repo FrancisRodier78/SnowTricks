@@ -29,6 +29,11 @@ class Document
     private $caption;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $docuImage;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="picture")
      */
     private $figurePicture;
@@ -72,6 +77,17 @@ class Document
         return $this;
     }
 
+    public function getDocuImage(): ?string
+    {
+        return $this->docuImage;
+    }
+
+    public function setDocuImage(string $docuImage): self
+    {
+        $this->caption = $docuImage;
+
+        return $this;
+    }
     public function getFigurePicture(): ?Figure
     {
         return $this->figurePicture;

@@ -94,10 +94,14 @@ div.ad-title {
     }
 
     #seeMedia {
-        display: contents;
+        display: block;
+        padding-left: 80px;
+        padding-right: 80px;
     }
 
     #hideMedia {
         display: none;
+        padding-left: 80px;
+        padding-right: 80px;
     }
 }

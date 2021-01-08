@@ -10,6 +10,10 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        your_db_provider:
+            entity:
+                class: App\Entity\User
+                property: aoiToken
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -27,6 +31,10 @@ security:
             logout:
                 path: account_logout
                 target: account_login
+
+            guard:
+                authenticators:
+                    - App\Security\TokenAuthenticator
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

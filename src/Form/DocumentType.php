@@ -16,11 +16,10 @@ class DocumentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('url', TextType::class)
+            ->add('url', UrlType::class)
             ->add('caption', TextType::class)
             //->add('booleanImageVideo')
-            //->add('figurePicture', TextType::class)
-            ->add('figurePicture', FileType::class)
+            //->add('figurePicture')
             //->add('figureVideo')
         ;
     }

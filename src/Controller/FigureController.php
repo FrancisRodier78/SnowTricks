@@ -143,7 +143,6 @@ class FigureController extends AbstractController
         $figure->setModifDate(new \DateTime('now'));
         $figure->setImageDefaut('');
 
-
         $form = $this->createForm(FigureType::class, $figure);
 
         $form->handleRequest($request);

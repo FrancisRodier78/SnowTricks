@@ -73,9 +73,9 @@ class AccountController extends AbstractController
             $hash = $encoder->encodePassword($user, $user->getHash());
             $user->setHash($hash);
 
-            // create token
-            $token = random_int(100000000000, 999999999999);
-            $user->setToken($token);
+            // create apiToken
+            $apiToken = random_int(100000000000, 999999999999);
+            $user->setApiToken($apiToken);
 
             $manager->persist($user);
             $manager->flush();
@@ -95,7 +95,7 @@ class AccountController extends AbstractController
 
             ->html('<p>Vous avez demandé la création d\'un compte sur Snowtricks.</p><br>
                     <p>Veuillez copier l\'URL ci-dessous dans la barre d\'adresse.</p><br>
-                    <p>http://localhost:8000/account-confirmation/' . $token . '</p>');
+                    <p>http://localhost:8000/account-confirmation/' . $apiToken . '</p>');
             
             $mailer->send($emailSend);
 
@@ -115,27 +115,27 @@ class AccountController extends AbstractController
     /**
      * Undocumented function
      *
-     * @Route("/account-confirmation/{token}", name="account_confirmation")
+     * @Route("/account-confirmation/{apiToken}", name="account_confirmation")
      * 
-     * @param [type] $token
+     * @param [type] $apiToken
      * @param UserRepository $repo
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @return void
      */
-    public function confirmation($token, UserRepository $repo, Request $request, EntityManagerInterface $manager) {
-        $user = $repo->findOneBy(['token' => $token]);
+    public function confirmation($apiToken, UserRepository $repo, Request $request, EntityManagerInterface $manager) {
+        $user = $repo->findOneBy(['apiToken' => $apiToken]);
 
         if(!$user) {
             $this->addFlash(
                 'warning',
-                "le token est inconnu !"
+                "le apiToken est inconnu !"
             );
 
             return $this->redirectToRoute('account_register');            
         } else {
-            $token = null;
-            $user->setToken($token);
+            $apiToken = null;
+            $user->setApiToken($apiToken);
 
             $manager->persist($user);
             $manager->flush();
@@ -253,9 +253,9 @@ class AccountController extends AbstractController
 
                 return $this->redirectToRoute('password_forget');            
             } else {
-                // create token
-                $token = random_int(100000000000, 999999999999);
-                $user->setToken($token);
+                // create apiToken
+                $apiToken = random_int(100000000000, 999999999999);
+                $user->setApiToken($apiToken);
 
                 $manager->persist($user);
                 $manager->flush();
@@ -275,7 +275,7 @@ class AccountController extends AbstractController
 
                 ->html('<p>Vous avez demandé de réinitialiser votre mot de passe.</p><br>
                         <p>Veuillez copier l\'URL ci-dessous dans la barre d\'adresse.</p><br>
-                        <p>http://localhost:8000/password-reset/' . $token . '</p>');
+                        <p>http://localhost:8000/password-reset/' . $apiToken . '</p>');
                 
                 $mailer->send($emailSend);
 
@@ -296,19 +296,19 @@ class AccountController extends AbstractController
     /**
      * Permet de recréé un nouveau mot de passe
      * 
-     * @Route("/password-reset/{token}", name="password_reset")
+     * @Route("/password-reset/{apiToken}", name="password_reset")
      *
      * @return Response
      */
-    public function passwordReset($token, UserRepository $repo, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
-        $user = $repo->findOneBy(['token' => $token]);
+    public function passwordReset($apiToken, UserRepository $repo, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder) {
+        $user = $repo->findOneBy(['apiToken' => $apiToken]);
 
         $passwordReset = new PasswordReset();
 
         if(!$user) {
             $this->addFlash(
                 'warning',
-                "le token est inconnu !"
+                "le apiToken est inconnu !"
             );
 
             return $this->redirectToRoute('password_forget');            
@@ -318,8 +318,8 @@ class AccountController extends AbstractController
             $form->handleRequest($request);
 
             if($form->isSubmitted() && $form->isValid()) {
-                $token = null;
-                $user->setToken($token);
+                $apiToken = null;
+                $user->setApiToken($apiToken);
 
                 $newPassword = $passwordReset->getNewPassword();
                 $hash = $encoder->encodePassword($user, $newPassword);

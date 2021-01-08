@@ -65,9 +65,9 @@
 
                 {% for video in figure.video %}
                     <div class="col-md-2 mt-3 mb-3 mr-3 ml-3 d-flex justify-content-center">
-                        <video controls class="image-figure">
-                            <source src="{{ video.url }}"  type="video/webm">
-                        </video>
+                        <a href="{{ video.url }}" target="_blank">
+                            <img src="{{ video.docuImage }}" alt="video" class="image-figure">
+                        </a>
                     </div>
                 {% endfor %}
             </div>
