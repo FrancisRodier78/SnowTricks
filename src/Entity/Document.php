@@ -24,12 +24,7 @@ class Document
     private $url;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $caption;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $docuImage;
 
@@ -84,7 +79,7 @@ class Document
 
     public function setDocuImage(string $docuImage): self
     {
-        $this->caption = $docuImage;
+        $this->docuImage = $docuImage;
 
         return $this;
     }

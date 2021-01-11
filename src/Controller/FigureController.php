@@ -237,6 +237,8 @@ class FigureController extends AbstractController
      */
     public function modif_imageDefaut(Figure $figure, Request $request, EntityManagerInterface $manager, FileUploader $fileUploader) {
         $figure->setModifDate(new \DateTime('now'));
+        //dump($figure->getImageDefaut());
+        //die;
         $figure->setImageDefaut('');
 
         $form = $this->createForm(FigureType::class, $figure);

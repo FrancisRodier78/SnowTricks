@@ -49,11 +49,11 @@ class FigureType extends AbstractType
             ])
             ->add('picture', CollectionType::class, [
                 'entry_type' => DocumentType::class,
-                'allow_add' => true
+                'allow_add' => true,
             ])
             ->add('video', CollectionType::class, [
                 'entry_type' => DocumentType::class,
-                'allow_add' => true
+                'allow_add' => true,
             ])
         ;
     }

@@ -64,7 +64,7 @@
                 {{ form_widget(form.url) }}
             </div>
             <div class="col">
-                {{ form_widget(form.caption) }}
+                {{ form_widget(form.booleanImageVideo) }}
             </div>
         </div>
     </div>
@@ -89,13 +89,13 @@
                 {{ form_widget(form.url) }}
             </div>
             <div class="col">
-                {{ form_widget(form.caption) }}
+                {{ form_widget(form.booleanImageVideo) }}
             </div>
         </div>
     </div>
 {% endblock %}
 
-{% block javascript %}
+{% block javascripts %}
     <script>
         $('#add-picture').click(function(){
             const index = $('#figure_picture div.form-group').length;

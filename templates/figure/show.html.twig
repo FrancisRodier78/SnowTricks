@@ -39,8 +39,6 @@
             <img src="{{ figure.imageDefaut }}" alt="Photo de la figure" class="image-principale">
         {% endif %}
 
-        <!-- img src="/images/Snowboarding-Tricks-00.jpg" alt="Photo de la figure" class="image-principale" -->
-
         {% if app.user %}
             <a href="{{ path('imageDefaut_modif', {'slug': figure.slug}) }}" class="btn btn-success bouton-success">
                 <i class="fas fa-edit"></i> 
