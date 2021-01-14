@@ -237,8 +237,6 @@ class FigureController extends AbstractController
      */
     public function modif_imageDefaut(Figure $figure, Request $request, EntityManagerInterface $manager, FileUploader $fileUploader) {
         $figure->setModifDate(new \DateTime('now'));
-        //dump($figure->getImageDefaut());
-        //die;
         $figure->setImageDefaut('');
 
         $form = $this->createForm(FigureType::class, $figure);
@@ -251,6 +249,16 @@ class FigureController extends AbstractController
             if ($imageDefaut) {
                 $imageDefautName = $fileUploader->upload($imageDefaut);
                 $figure->setImageDefaut($imageDefautName);
+            }
+
+            foreach($figure->getPicture() as $picture) {
+                $picture->setFigurePicture($figure);
+                $manager->persist($picture);
+            }
+
+            foreach($figure->getVideo() as $video) {
+                $video->setFigureVideo($figure);
+                $manager->persist($video);
             }
 
             $manager->persist($figure);

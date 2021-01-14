@@ -22,16 +22,16 @@ div.ad-title {
 
 .bouton-success {
     position: absolute; 
-    top: 250px; 
-    right: 360px; 
+    top: 12px; 
+    right: 77px; 
     width: 40px; 
     height: 40px;
 }
 
 .bouton-danger {
     position: absolute; 
-    top: 250px; 
-    right: 310px; 
+    top: 12px; 
+    right: 27px; 
     width: 40px; 
     height: 40px;
 }

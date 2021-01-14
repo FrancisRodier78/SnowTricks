@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <div class="container d-flex justify-content-center">
+    <div class="container d-flex justify-content-center image-principale">
         <!-- Fenêtre de modal -->
         <div class="modal fade" id="deleteModal_{{ figure.slug }}">
             <div class="modal-dialog">
@@ -30,7 +30,7 @@
 
         {% if figure.imageDefaut == '' %}
             {% if document != NULL %}
-                <img src="{{ document.url }}" alt="Photo de la figure" class="image-principale">
+                <img src="{{ document.url }}" alt="Photo de la figure">
             {% else %}
                 <!-- Si le document est null Alors on prend une image par defaut -->
                 <img src="/images/Snowboarding-Tricks-00.jpg" alt="Photo de la figure" class="image-principale">

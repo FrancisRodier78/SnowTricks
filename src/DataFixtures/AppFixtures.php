@@ -456,7 +456,7 @@ class AppFixtures extends Fixture
             /////////////////////////
             $figure = new Figure();
 //
-            $figureName = 'Carre heelside ou carre talon (anciennementbackside)';
+            $figureName = 'Carre heelside ou carre talon (anciennement backside)';
             $groupeName = $groupeName;
 //
             $imageDefaut = "/images/Snowboarding-Tricks-04.jpeg";

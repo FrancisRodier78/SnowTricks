@@ -34,7 +34,6 @@ class FigureType extends AbstractType
                 ]
             ])
             ->add('imageDefaut', FileType::class, [
-//            ->add('imageDefaut', TextType::class, [
                     'label' => 'Image',
                 'attr' => [
                     'placeholder' => "Tapez l'adresse de l'image de la figure."
@@ -48,11 +47,11 @@ class FigureType extends AbstractType
                 'choice_label' => 'groupeName' 
             ])
             ->add('picture', CollectionType::class, [
-                'entry_type' => DocumentType::class,
+                'entry_type' => DocumentType1::class,
                 'allow_add' => true,
             ])
             ->add('video', CollectionType::class, [
-                'entry_type' => DocumentType::class,
+                'entry_type' => DocumentType2::class,
                 'allow_add' => true,
             ])
         ;

@@ -48,6 +48,8 @@
 
     {{ form_widget(form) }}
 
+    <input type="hidden" id="widgets-counter" value="0">
+
     <div class="form-group">
         <button type="button" id="add-picture" class="btn btn-secondary">Ajouter une picture</button>
     </div>
@@ -58,13 +60,20 @@
 {% endblock %}
 
 {% block _figure_picture_entry_widget %}
-    <div class="form-group">
+    <div class="form-group" id="block_{{id}}">
         <div class="row">
-            <div class="col">
-                {{ form_widget(form.url) }}
+            <div class="col-10">
+                <div class="row">
+                    <div class="col">
+                        {{ form_widget(form.url) }}
+                    </div>
+                    <div>
+                        {{ form_widget(form.booleanImageVideo) }}
+                    </div>
+                </div>
             </div>
-            <div class="col">
-                {{ form_widget(form.booleanImageVideo) }}
+            <div class="col-2">
+                <button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
             </div>
         </div>
     </div>
@@ -83,13 +92,23 @@
 {% endblock %}
 
 {% block _figure_video_entry_widget %}
-    <div class="form-group">
+    <div class="form-group" id="block_{{id}}">
         <div class="row">
-            <div class="col">
-                {{ form_widget(form.url) }}
+            <div class="col-10">
+                <div class="row">
+                    <div class="col-6">
+                        {{ form_widget(form.url) }}
+                    </div>
+                    <div class="col-6">
+                        {{ form_widget(form.docuImage) }}
+                    </div>
+                    <div>
+                        {{ form_widget(form.booleanImageVideo) }}
+                    </div>
+                </div>
             </div>
-            <div class="col">
-                {{ form_widget(form.booleanImageVideo) }}
+            <div class="col-2">
+                <button type="button" data-action="delete" data-target="#block_{{id}}" class="btn btn-danger">X</button>
             </div>
         </div>
     </div>
@@ -98,9 +117,13 @@
 {% block javascripts %}
     <script>
         $('#add-picture').click(function(){
-            const index = $('#figure_picture div.form-group').length;
+            const index = +$('#widgets-counter').val();
             const tmpl = $('#figure_picture').data('prototype').replace(/__name__/g, index);
             $('#figure_picture').append(tmpl);
+
+            $('#widgets-counter').val(index + 1);
+
+            handleDeleteButtons();
         })
 
         $('#add-video').click(function(){
@@ -108,5 +131,14 @@
             const tmpl = $('#figure_video').data('prototype').replace(/__name__/g, index);
             $('#figure_video').append(tmpl);
         })
+
+        function handleDeleteButtons() {
+            $('button[data-action="delete"]').click(function() {
+                const target = this.dataset.target;
+                $(target).remove();
+            })
+        };
+
+        handleDeleteButtons();
     </script>
 {% endblock %}
