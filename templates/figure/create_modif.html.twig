@@ -15,22 +15,6 @@
         </div>
     </div>
 
-    <!--div class="container">
-        <div class="row mb-3 bg-primary">
-            {#% for picture in figure.picture %}
-                <div class="col-2">
-                    <img src="{{ picture.url }}" alt="figure" class="image-figure">
-                </div>
-            {% endfor %}
-
-            {% for video in figure.video %}
-                <div class="col-2">
-                    <img src="{{ video.url }}" alt="Video" class="image-figure">
-                </div>
-            {% endfor %#}
-        </div>
-    </div-->
-
     <div class="container">
         <div class="row mb-3 bg-primary d-flex justify-content-center">
             {{ form_start(form) }}
@@ -48,7 +32,7 @@
 
     {{ form_widget(form) }}
 
-    <input type="hidden" id="widgets-counter" value="0">
+    <input type="hidden" id="widgets-counter-picture" value="0">
 
     <div class="form-group">
         <button type="button" id="add-picture" class="btn btn-secondary">Ajouter une picture</button>
@@ -80,7 +64,11 @@
 {% endblock %}
 
 {% block _figure_video_widget %}
+    <p>Ici, vous pouvez ajouter vos propres videos !</p>
+
     {{ form_widget(form) }}
+
+    <input type="hidden" id="widgets-counter-video" value="0">
 
     <div class="form-group">
         <button type="button" id="add-video" class="btn btn-secondary">Ajouter une video</button>
@@ -117,20 +105,23 @@
 {% block javascripts %}
     <script>
         $('#add-picture').click(function(){
-            const index = +$('#widgets-counter').val();
+            const index = +$('#widgets-counter-picture').val();
             const tmpl = $('#figure_picture').data('prototype').replace(/__name__/g, index);
             $('#figure_picture').append(tmpl);
 
-            $('#widgets-counter').val(index + 1);
+            $('#widgets-counter-picture').val(index + 1);
 
             handleDeleteButtons();
         })
 
         $('#add-video').click(function(){
-            const index = $('#figure_video div.form-group').length;
+            const index = +$('#widgets-counter-video').val();
             const tmpl = $('#figure_video').data('prototype').replace(/__name__/g, index);
             $('#figure_video').append(tmpl);
-        })
+
+            +$('#widgets-counter-video').val(index + 1);
+
+            handleDeleteButtons();        })
 
         function handleDeleteButtons() {
             $('button[data-action="delete"]').click(function() {
@@ -139,6 +130,15 @@
             })
         };
 
+        function updateCounter() {
+            const countPicture = +$('#figure_picture div.form-group').length;
+            $('#widgets-counter-picture').val(countPicture);
+
+            const countVideo = +$('#figure_video div.form-group').length;
+            $('#widgets-counter-video').val(countVideo);
+        }
+
+        updateCounter();
         handleDeleteButtons();
     </script>
 {% endblock %}
