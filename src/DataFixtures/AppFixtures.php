@@ -32,7 +32,14 @@ class AppFixtures extends Fixture
         // Table User Admin
         /////////////////////////
         $user = new User();
-        $avatar = $faker->imageURL(60,40);
+
+        //$genres = ['male', 'female'];
+        $genre = $faker->randomElement($genres);
+        $avatar = 'https://randomuser.me/api/portraits/';
+        $avatarId = $faker->numberBetween(1, 99) . '.jpg';
+        //$avatar .= ($genre == 'male' ? 'men/' : 'women/') . $avatarId;
+        $avatar .= 'men/' . $avatarId;
+
         $hash = $this->encoder->encodePassword($user, 'password');
 
         $user->setPrenom('Lior')
@@ -55,7 +62,13 @@ class AppFixtures extends Fixture
             $prenom = $faker->firstNameMale;
             $nom = $faker->lastName;
             $email = $faker->email;
-            $avatar = $faker->imageURL(60,40);
+
+            $genres = ['male', 'female'];
+            $genre = $faker->randomElement($genres);
+            $avatar = 'https://randomuser.me/api/portraits/';
+            $avatarId = $faker->numberBetween(1, 99) . '.jpg';
+            $avatar .= ($genre == 'male' ? 'men/' : 'women/') . $avatarId;
+                
             $hash = $this->encoder->encodePassword($user, 'password');
 
             $user->setPrenom($prenom)
@@ -123,7 +136,6 @@ class AppFixtures extends Fixture
 
                 $picture = 'https://randomuser.me/api/portraits/';
                 $pictureId = $faker->numberBetween(1, 99) . '.jpg';
-
                 $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
 
                 $hash = $this->encoder->encodePassword($user, 'password');
@@ -156,7 +168,6 @@ class AppFixtures extends Fixture
             $description = 'Figure habituelle.';
 
             $document->setUrl($URL)
-                     ->setCaption($description)
                      ->setBooleanImageVideo($boolean);
 
             if ($boolean == 2) {
@@ -179,7 +190,13 @@ class AppFixtures extends Fixture
             $prenom = $faker->firstNameMale;
             $nom = $faker->lastName;
             $email = $faker->email;
-            $avatar = $faker->imageURL(60,40);
+
+            $genres = ['male', 'female'];
+            $genre = $faker->randomElement($genres);
+            $avatar = 'https://randomuser.me/api/portraits/';
+            $avatarId = $faker->numberBetween(1, 99) . '.jpg';
+            $avatar .= ($genre == 'male' ? 'men/' : 'women/') . $avatarId;
+    
             $hash = $this->encoder->encodePassword($user, 'password');
 
             $user->setPrenom($prenom)
@@ -247,7 +264,6 @@ class AppFixtures extends Fixture
 
                 $picture = 'https://randomuser.me/api/portraits/';
                 $pictureId = $faker->numberBetween(1, 99) . '.jpg';
-
                 $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
 
                 $hash = $this->encoder->encodePassword($user, 'password');
@@ -280,7 +296,6 @@ class AppFixtures extends Fixture
             $description = 'Figure habituelle.';
 
             $document->setUrl($URL)
-                     ->setCaption($description)
                      ->setBooleanImageVideo($boolean);
 
             if ($boolean == 2) {
@@ -304,7 +319,13 @@ class AppFixtures extends Fixture
             $prenom = $faker->firstNameMale;
             $nom = $faker->lastName;
             $email = $faker->email;
-            $avatar = $faker->imageURL(60,40);
+
+            $genres = ['male', 'female'];
+            $genre = $faker->randomElement($genres);
+            $avatar = 'https://randomuser.me/api/portraits/';
+            $avatarId = $faker->numberBetween(1, 99) . '.jpg';
+            $avatar .= ($genre == 'male' ? 'men/' : 'women/') . $avatarId;
+    
             $hash = $this->encoder->encodePassword($user, 'password');
 
             $user->setPrenom($prenom)
@@ -372,7 +393,6 @@ class AppFixtures extends Fixture
 
                 $picture = 'https://randomuser.me/api/portraits/';
                 $pictureId = $faker->numberBetween(1, 99) . '.jpg';
-
                 $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
 
                 $hash = $this->encoder->encodePassword($user, 'password');
@@ -405,7 +425,6 @@ class AppFixtures extends Fixture
             $description = 'Figure habituelle.';
 
             $document->setUrl($URL)
-                     ->setCaption($description)
                      ->setBooleanImageVideo($boolean);
 
             if ($boolean == 2) {
@@ -428,7 +447,13 @@ class AppFixtures extends Fixture
             $prenom = $faker->firstNameMale;
             $nom = $faker->lastName;
             $email = $faker->email;
-            $avatar = $faker->imageURL(60,40);
+
+            $genres = ['male', 'female'];
+            $genre = $faker->randomElement($genres);
+            $avatar = 'https://randomuser.me/api/portraits/';
+            $avatarId = $faker->numberBetween(1, 99) . '.jpg';
+            $avatar .= ($genre == 'male' ? 'men/' : 'women/') . $avatarId;
+    
             $hash = $this->encoder->encodePassword($user, 'password');
 
             $user->setPrenom($prenom)
@@ -496,7 +521,6 @@ class AppFixtures extends Fixture
 
                 $picture = 'https://randomuser.me/api/portraits/';
                 $pictureId = $faker->numberBetween(1, 99) . '.jpg';
-
                 $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
 
                 $hash = $this->encoder->encodePassword($user, 'password');
@@ -529,7 +553,6 @@ class AppFixtures extends Fixture
             $description = 'Figure habituelle.';
 
             $document->setUrl($URL)
-                     ->setCaption($description)
                      ->setBooleanImageVideo($boolean);
 
             if ($boolean == 2) {
@@ -553,7 +576,13 @@ class AppFixtures extends Fixture
             $prenom = $faker->firstNameMale;
             $nom = $faker->lastName;
             $email = $faker->email;
-            $avatar = $faker->imageURL(60,40);
+
+            $genres = ['male', 'female'];
+            $genre = $faker->randomElement($genres);
+            $avatar = 'https://randomuser.me/api/portraits/';
+            $avatarId = $faker->numberBetween(1, 99) . '.jpg';
+            $avatar .= ($genre == 'male' ? 'men/' : 'women/') . $avatarId;
+    
             $hash = $this->encoder->encodePassword($user, 'password');
 
             $user->setPrenom($prenom)
@@ -576,7 +605,7 @@ class AppFixtures extends Fixture
 
                 $manager->persist($groupe);
 
-                for($j = 1; $j <= mt_rand(2,3); $j++) {
+                for($j = 1; $j <= mt_rand(8,9); $j++) {
                     /////////////////////////
                     // Table Figure
                     /////////////////////////
@@ -629,7 +658,6 @@ class AppFixtures extends Fixture
 
                         $picture = 'https://randomuser.me/api/portraits/';
                         $pictureId = $faker->numberBetween(1, 99) . '.jpg';
-
                         $picture .= ($genre == 'male' ? 'men/' : 'women/') . $pictureId;
 
                         $hash = $this->encoder->encodePassword($user, 'password');
@@ -658,10 +686,7 @@ class AppFixtures extends Fixture
                         $document = new Document();
                         $boolean = mt_rand(1,2);
 
-                        $description = $faker->sentence(2);
-
-                        $document->setCaption($description)
-                                 ->setBooleanImageVideo($boolean);
+                        $document->setBooleanImageVideo($boolean);
 
                         if ($boolean == 1) {
                             $num = mt_rand(1, 6);

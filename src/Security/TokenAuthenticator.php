@@ -1,26 +1,27 @@
 <?php
-// src/Security/TokenAuthenticator.php
 
+// src/Security/TokenAuthenticator.php
 namespace App\Security;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
     private $em;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -30,7 +31,9 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function supports(Request $request)
     {
-        return $request->headers->has('X-AUTH-TOKEN');
+        return 'account_login' === $request->attributes->get('_route') && $request->isMethod('POST');
+        //return true;
+        //return $request->headers->has('X-AUTH-TOKEN');
     }
 
     /**
@@ -39,7 +42,15 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        return $request->headers->get('X-AUTH-TOKEN');
+        //return $request->headers->get('X-AUTH-TOKEN');
+
+        // Pourquoi il ne lit pas l'email et le apiToken ?
+        $credentials = [
+            'username' => $request->request->get('_username'),
+            'password' => $request->request->get('_password')
+        ];
+        
+        return $credentials;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
@@ -53,7 +64,15 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         // The "username" in this case is the apiToken, see the key `property`
         // of `your_db_provider` in `security.yaml`.
         // If this returns a user, checkCredentials() is called next:
-        return $userProvider->loadUserByUsername($credentials);
+        
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['username'], 'apiToken' => null]);
+
+        if (!$user) {
+            // fail authentication with a custom error
+            throw new CustomUserMessageAuthenticationException('Identifiants invalides ou compte non activé.');
+        }
+
+        return $user;
     }
 
     public function checkCredentials($credentials, UserInterface $user)
