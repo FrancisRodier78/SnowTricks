@@ -108,6 +108,16 @@ class FigureController extends AbstractController
                 $figure->setImageDefaut($imageDefautName);
             }
 
+            foreach($figure->getPicture() as $picture) {
+                $picture->setFigurePicture($figure);
+                $manager->persist($picture);
+            }
+
+            foreach($figure->getVideo() as $video) {
+                $video->setFigureVideo($figure);
+                $manager->persist($video);
+            }
+
             $manager->persist($figure);
             $manager->flush();
 
@@ -153,6 +163,16 @@ class FigureController extends AbstractController
             if ($imageDefaut) {
                 $imageDefautName = $fileUploader->upload($imageDefaut);
                 $figure->setImageDefaut($imageDefautName);
+            }
+
+            foreach($figure->getPicture() as $picture) {
+                $picture->setFigurePicture($figure);
+                $manager->persist($picture);
+            }
+
+            foreach($figure->getVideo() as $video) {
+                $video->setFigureVideo($figure);
+                $manager->persist($video);
             }
 
             $manager->persist($figure);
