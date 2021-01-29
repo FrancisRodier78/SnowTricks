@@ -4,14 +4,12 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarColor01">
+    <div id="navxxx">
+    <div class="collapse navbar-collapse">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="{{ path('homepage') }}">Home</a>
             </li>
-            <!-- li class="nav-item">
-                <a class="nav-link" href="#">Tricks</a>   
-            </li -->
             {% if app.user %}
                 <li class="nav-item">
                     <a href="{{ path('account_profile') }}" class="nav-link" href="#">Mon Profil</a>
@@ -34,6 +32,38 @@
                 </li>
             {% endif %}
         </ul>
+    </div>
+    </div>
+
+    <div id="navyyy">
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('homepage') }}"><i class="fas fa-home"></i></a>
+            </li>
+            {% if app.user %}
+                <li class="nav-item">
+                    <a href="{{ path('account_profile') }}" class="nav-link" href="#"><i class="fas fa-id-badge"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('account_password') }}" class="nav-link" href="#"><i class="fas fa-key"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('figure_create') }}" class="nav-link" href="#"><i class="fas fa-snowboarding"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('account_logout') }}" class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i></a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{{ path('account_login') }}" class="nav-link" href="#"><i class="fas fa-sign-in-alt"></i></i></a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('account_register') }}" class="nav-link" href="#"><i class="fas fa-door-open"></i></a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
     </div>
 </nav>
 

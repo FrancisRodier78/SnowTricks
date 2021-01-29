@@ -88,6 +88,14 @@ div.ad-title {
     display: none;
 }
 
+#navyyy {
+    display: none;
+}
+
+#navxxx {
+    display: contents;
+}
+
 @media(max-width: 767px) { 
     #trickMedia {
             display: none;
@@ -103,5 +111,13 @@ div.ad-title {
         display: none;
         padding-left: 80px;
         padding-right: 80px;
+    }
+
+    #navxxx {
+        display: none;
+    }
+    
+    #navyyy {
+        display: contents;
     }
 }
