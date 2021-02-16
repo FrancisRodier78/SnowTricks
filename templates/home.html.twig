@@ -24,7 +24,7 @@
     </div>
 
     <div class="container pt-3" id="begin-figure">
-        <div class="row">
+        <div class="row" id="listeFigures">
             {% for figure in figures %}
                 <!-- Fenêtre de modal -->
                 <div class="modal fade" id="deleteModal_{{ figure.slug }}">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
 
-                {% set url = path('figure_show', {'slug': figure.slug, 'page': 1}) %}
+                {% set url = path('figure_show', {'slug': figure.slug, 'page': page}) %}
 
                 {% if (loop.index - 1) is divisible by(5) or loop.first %}
                     <div class="offset-md-1 col-md-2">
@@ -87,7 +87,15 @@
             {% endfor %}
         </div>
 
-        <div class="row">
+        <div class="row" id="loadMore_1">
+            <div class="offset-md-5 col-2">
+                <a onclick="loadMore(1)" class="btn btn-primary d-flex justify-content-center">
+                   <i class="fas fa-spinner white"> Load More</i>                    
+                </a> 
+            </div>
+        </div>
+
+        <div class="row" id="arrow_1">
             <div class="col">
                 <a href="#begin-figure">
                     <i class="fas fa-arrow-up d-flex justify-content-end white"></i>
@@ -95,4 +103,33 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        function loadMore(groupe){
+            var request = new XMLHttpRequest();
+    
+            request.onreadystatechange = function() {
+                if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+                    var response = this.responseText;
+                    
+                    groupe--;
+                    let btnLoadMore = document.getElementById("loadMore_" + groupe);
+                    btnLoadMore.remove();
+                    let btnArrow = document.getElementById("arrow_" + groupe);
+                    btnArrow.remove();
+                    groupe++;
+
+                    let container = document.getElementById("begin-figure");
+                    container.innerHTML = container.innerHTML + response;
+                }
+            };
+
+            groupe++;
+            request.open("GET", "/homepage2/" + groupe);
+            request.send();
+        };
+    </script>
 {% endblock %}

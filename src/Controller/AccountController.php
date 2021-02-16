@@ -86,9 +86,9 @@ class AccountController extends AbstractController
             $emailSend = (new Email())
             ->from('francisrodier78@yahoo.fr')
 
-            //->to($user->getEmail())
+            ->to($user->getEmail())
             //   ou
-            ->to('francisrodier78@yahoo.fr')
+            //->to('francisrodier78@yahoo.fr')
 
             ->subject('Confirmation du compte.')
             ->text('Cliquer sur l\'URL pour confirmer votre compte.')
@@ -96,8 +96,11 @@ class AccountController extends AbstractController
             ->html('<p>Vous avez demandé la création d\'un compte sur Snowtricks.</p><br>
                     <p>Veuillez copier l\'URL ci-dessous dans la barre d\'adresse.</p><br>
                     <p>http://localhost:8000/account-confirmation/' . $apiToken . '</p>');
-            
+
             $mailer->send($emailSend);
+
+            dump($user->getEmail());
+            die();
 
             $this->addFlash(
                 'success',
@@ -266,9 +269,9 @@ class AccountController extends AbstractController
                 $emailSend = (new Email())
                 ->from('francisrodier78@yahoo.fr')
 
-                //->to($email)
+                ->to($email)
                 //   ou
-                ->to('francisrodier78@yahoo.fr')
+                //->to('francisrodier78@yahoo.fr')
 
                 ->subject('Réinitialiser le mot de passe.')
                 ->text('Cliquer sur l\'URL pour réinitialiser votre mot de passe.')
@@ -278,6 +281,9 @@ class AccountController extends AbstractController
                         <p>http://localhost:8000/password-reset/' . $apiToken . '</p>');
                 
                 $mailer->send($emailSend);
+
+                dump($email);
+                die();
 
                 $this->addFlash(
                     'success',

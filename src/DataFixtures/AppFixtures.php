@@ -34,7 +34,7 @@ class AppFixtures extends Fixture
         $user = new User();
 
         //$genres = ['male', 'female'];
-        $genre = $faker->randomElement($genres);
+        //$genre = $faker->randomElement($genres);
         $avatar = 'https://randomuser.me/api/portraits/';
         $avatarId = $faker->numberBetween(1, 99) . '.jpg';
         //$avatar .= ($genre == 'male' ? 'men/' : 'women/') . $avatarId;

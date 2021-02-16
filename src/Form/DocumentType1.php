@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class DocumentType1 extends AbstractType
 {
@@ -26,6 +27,12 @@ class DocumentType1 extends AbstractType
                 ]
             ])
             //->add('figurePicture')
+            //->add('figurePicture', TextType::class)
+            //->add('figurePicture', TextareaType::class)
+            //->add('figurePicture', EntityType::class, [
+            //    'class' => Document::class
+            //])
+
             //->add('figureVideo')
         ;
     }

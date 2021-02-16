@@ -1,0 +1,82 @@
+{% block body %}
+    <div class="row">
+        {% for figure in figures %}
+            <!-- Fenêtre de modal -->
+            <div class="modal fade" id="deleteModal_{{ figure.slug }}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Fenêtre de suppression.</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>Confirmez-vous la suppression !</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{{ path('figure_supp', {'slug': figure.slug}) }}" class="btn btn-danger">Valider</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% set url = path('figure_show', {'slug': figure.slug, 'page': page}) %}
+
+            {% if (loop.index - 1) is divisible by(5) or loop.first %}
+                <div class="offset-md-1 col-md-2">
+            {% else %}
+                <div class="col-md-2">
+            {% endif %}
+            
+                <div class="card bg-light mb-3 taille">
+                    <a href="{{ url }}" class="d-flex justify-content-center">
+                        <div style="background-image: url('{{figure.imageDefaut}}')" class="image-home"></div>
+                    </a>
+                    
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <div class="row mb-1">
+                                <div class="col d-flex justify-content-center">
+                                    <a href="{{ url }}" class="btn btn-primary">{{ figure.figureName }}</a>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1">
+                                <div class="col-6 d-flex justify-content-center">
+                                    {% if app.user and ((app.user == figure.authorId) or (app.user.roles[0] == 'ROLE_ADMIN')) %}
+                                        <a href="{{ path('figure_modif', {'slug': figure.slug}) }}" class="btn btn-success">
+                                            <i class="fas fa-edit"></i> 
+                                        </a>
+                                    {% endif %}
+                                </div>
+                                <div class="col-6 d-flex justify-content-center">
+                                    {% if app.user and ((app.user == figure.authorId) or (app.user.roles[0] == 'ROLE_ADMIN')) %}
+                                        <a data-toggle="modal" href="#deleteModal_{{ figure.slug }}" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if (figures|length == 15) %}
+        <div class="row" id="loadMore_{{groupe}}">
+            <div class="offset-md-5 col-2">
+                <a onclick="loadMore({{groupe}})" class="btn btn-primary d-flex justify-content-center">
+                <i class="fas fa-spinner white"> Load More</i>                    
+                </a> 
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="row" id="arrow_{{groupe}}">
+        <div class="col">
+            <a href="#begin-figure">
+                <i class="fas fa-arrow-up d-flex justify-content-end white"></i>
+            </a>
+        </div>
+    </div>    
+{% endblock %}
