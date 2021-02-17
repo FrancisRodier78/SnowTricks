@@ -12,10 +12,10 @@ Environnement utilisé durant le développement
         Apache 2.4.46
         PHP 7.3.21
         MySQL 5.7.31
-    cocur/slugify 4.0
-    fzaninotto/faker" 1.9
-    twig/extra-bundle": 2.12 à 3.0
-    twig/twig" 2.12 à 3.0
+    slugify 4.0
+    faker 1.9
+    twig/extra-bundle 2.12 à 3.0
+    twig 2.12 à 3.0
 
 Installation
 
