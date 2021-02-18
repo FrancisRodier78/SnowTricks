@@ -12,7 +12,6 @@ class HomeController extends AbstractController {
      * @Route("/", name="homepage")
      */
     public function home(FigureRepository $repo, $page = 1, $groupe = 1){
-        //$figures = $repo->findAll();
         $limit = 15;
         $start = $groupe * $limit - $limit;
         $figures = $repo->findBy(array(),array('id' => 'ASC'), $limit, $start);
