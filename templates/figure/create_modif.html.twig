@@ -29,7 +29,13 @@
                         </div>
                         <div class="modal-footer">
                             <!-- button type="button" class="btn btn-danger" data-dimiss="modal">Valider</button -->
-                            <a href="{{ path('figure_supp', {'slug': figure.slug}) }}" class="btn btn-danger">Valider</a>
+                            {% if figure.slug == null %}
+                                {% set slug = " " %}
+                            {% else %}
+                                {% set slug = figure.slug %}
+                            {% endif %}
+
+                            <a href="{{ path('figure_supp', {'slug': slug}) }}" class="btn btn-danger">Valider</a>
                         </div>
                     </div>
                 </div>

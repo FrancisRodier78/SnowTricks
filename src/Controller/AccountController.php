@@ -99,9 +99,6 @@ class AccountController extends AbstractController
 
             $mailer->send($emailSend);
 
-            dump($user->getEmail());
-            die();
-
             $this->addFlash(
                 'success',
                 "Votre profil a bien été créé ! Veuillez le confirmez par l'email envoyé."
